@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
   Code2,
   Database,
   FileText,
   Github,
   GraduationCap,
+  Linkedin,
   Mail,
   MapPin,
   Server,
@@ -13,7 +16,7 @@ import {
   Sparkles,
   Trophy,
 } from 'lucide-react';
-import { experience, interests, portfolio, projects, skillGroups } from './data.js';
+import { interests, photos, portfolio, projects, skillGroups } from './data.js';
 
 const navItems = [
   { id: 'home', label: 'Home' },
@@ -21,11 +24,11 @@ const navItems = [
   { id: 'about', label: 'About' },
 ];
 
-const trackedSections = ['home', 'experience', 'projects', 'about'];
+const trackedSections = ['home', 'skills', 'projects', 'about'];
 
 const accentBySection = {
   home: 'violet',
-  experience: 'coral',
+  skills: 'coral',
   projects: 'coral',
   about: 'violet',
 };
@@ -112,7 +115,7 @@ function App() {
               <h1 id="home-title">
                 Hi, I&apos;m <span>{portfolio.name}</span>.
               </h1>
-              <p className="hero-role">Backend engineer &amp; data science student.</p>
+              <HeroRole />
               <p className="hero-intro">{portfolio.intro}</p>
               <div className="hero-tags" aria-label="Focus areas">
                 {portfolio.roles.slice(0, 3).map((role) => (
@@ -125,7 +128,7 @@ function App() {
                   <Github size={22} aria-hidden="true" />
                   <span>GitHub</span>
                 </a>
-                <a className="button text-button" href={portfolio.resumeUrl}>
+                <a className="button text-button" href={portfolio.resumeUrl} target="_blank" rel="noreferrer">
                   <FileText size={21} aria-hidden="true" />
                   <span>Resume</span>
                 </a>
@@ -136,66 +139,31 @@ function App() {
           </div>
         </section>
 
-        <section id="experience" className="section experience-section" aria-labelledby="experience-title">
-          <div className="container resume-layout">
-            <div className="resume-heading">
-              <p className="eyebrow">Resume signal</p>
-              <h2 id="experience-title">Backend Receipts</h2>
+        <section id="skills" className="section skills-section" aria-labelledby="skills-title">
+          <div className="container">
+            <div className="section-heading">
+              <p className="eyebrow">Technical toolkit</p>
+              <h2 id="skills-title">Skills</h2>
               <p>
-                Microsoft outage APIs, Azure CosmosDB data models, route safety analysis,
-                ML research, and a Data Science degree in progress at Michigan.
+                Languages, frameworks, and tools I reach for when building reliable backend systems
+                and data-driven applications.
               </p>
             </div>
 
-            <div className="resume-board">
-              <div className="stat-strip" aria-label="Resume quick stats">
-                <StatCard icon={Server} value="10,000+" label="internal dashboard users supported" />
-                <StatCard icon={ShieldCheck} value="20%" label="sentiment accuracy improvement" />
-                <StatCard icon={Trophy} value="1st" label="place at UncommonHacks" />
-              </div>
-
-              <div className="experience-list">
-                {experience.map((item) => (
-                  <article className={`experience-card accent-${item.accent}`} key={`${item.org}-${item.title}`}>
-                    <div className="experience-meta">
-                      <p>{item.date}</p>
-                      <span>{item.place}</span>
-                    </div>
-                    <div>
-                      <h3>{item.org}</h3>
-                      <p className="experience-role">{item.title}</p>
-                      <ul>
-                        {item.points.map((point) => (
-                          <li key={point}>{point}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </article>
-                ))}
-              </div>
-
-              <div className="skills-panel" aria-label="Technical skills">
-                {skillGroups.map((group) => (
-                  <div className="skill-group" key={group.title}>
-                    <h3>{group.title}</h3>
-                    <div>
-                      {group.skills.map((skill) => (
-                        <span key={skill}>{skill}</span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <div className="skills-showcase">
+              {skillGroups.map((group, i) => (
+                <SkillCard key={group.title} group={group} index={i} />
+              ))}
             </div>
           </div>
         </section>
+
 
         <section id="projects" className="section projects-section" aria-labelledby="projects-title">
           <div className="container">
             <div className="section-heading">
               <p className="eyebrow">Selected work</p>
               <h2 id="projects-title">Projects</h2>
-              <p>{portfolio.projectsIntro}</p>
             </div>
 
             <div className="projects-layout">
@@ -251,7 +219,7 @@ function App() {
               </div>
             </div>
 
-            <ProfileFrame />
+            <PhotoSlideshow />
           </div>
 
           <div className="container interests-grid" aria-label="Interests">
@@ -268,8 +236,22 @@ function App() {
 
       <footer className="site-footer">
         <div className="container footer-inner">
-          <span>{portfolio.initials}</span>
-          <p>Built with React, Vite, and a tiny bit of late-night polish.</p>
+          <span className="footer-logo">{portfolio.initials}</span>
+          <p>Built with React &amp; Vite.</p>
+          <div className="footer-social" aria-label="Social links">
+            <a href={portfolio.githubUrl} target="_blank" rel="noreferrer" aria-label="GitHub">
+              <Github size={18} />
+            </a>
+            <a href={portfolio.linkedinUrl} target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <Linkedin size={18} />
+            </a>
+            <a href={`mailto:${portfolio.email}`} aria-label="Email">
+              <Mail size={18} />
+            </a>
+            <a href={portfolio.devpostUrl} target="_blank" rel="noreferrer" aria-label="Devpost">
+              <Trophy size={18} />
+            </a>
+          </div>
         </div>
       </footer>
     </div>
@@ -410,16 +392,22 @@ function ProjectMap({ selectedProjectId, onSelectProject }) {
 function ProjectCard({ project }) {
   return (
     <article className={`project-card accent-${project.accent}`}>
-      <div className={`project-art ${project.id}`}>
-        <div className="art-screen">
-          <span />
-          <span />
-          <span />
+      {project.image ? (
+        <div className="project-screenshot">
+          <img src={project.image} alt={`${project.title} screenshot`} />
         </div>
-        <div className="art-core" />
-        <div className="art-rail rail-one" />
-        <div className="art-rail rail-two" />
-      </div>
+      ) : (
+        <div className={`project-art ${project.id}`}>
+          <div className="art-screen">
+            <span />
+            <span />
+            <span />
+          </div>
+          <div className="art-core" />
+          <div className="art-rail rail-one" />
+          <div className="art-rail rail-two" />
+        </div>
+      )}
 
       <div className="project-card-body">
         <p className="project-tag">{project.tag}</p>
@@ -436,6 +424,67 @@ function ProjectCard({ project }) {
         </a>
       </div>
     </article>
+  );
+}
+
+function PhotoSlideshow() {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (photos.length <= 1) return;
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % photos.length);
+    }, 3500);
+    return () => clearInterval(timer);
+  }, []);
+
+  const prev = () => setCurrent((c) => (c - 1 + photos.length) % photos.length);
+  const next = () => setCurrent((c) => (c + 1) % photos.length);
+
+  if (photos.length === 0) {
+    return <ProfileFrame />;
+  }
+
+  return (
+    <aside className="profile-frame" aria-label="Personal photos">
+      <div className="slideshow-stage">
+        {photos.map((src, i) => (
+          <img
+            key={src}
+            src={src}
+            alt={`Photo ${i + 1}`}
+            className={`slide-img${i === current ? ' active' : ''}`}
+          />
+        ))}
+        {photos.length > 1 && (
+          <>
+            <button className="slide-btn slide-prev" type="button" onClick={prev} aria-label="Previous photo">
+              <ChevronLeft size={20} />
+            </button>
+            <button className="slide-btn slide-next" type="button" onClick={next} aria-label="Next photo">
+              <ChevronRight size={20} />
+            </button>
+          </>
+        )}
+        <div className="slide-dots" role="tablist" aria-label="Photo navigation">
+          {photos.map((_, i) => (
+            <button
+              key={i}
+              role="tab"
+              type="button"
+              className={`slide-dot${i === current ? ' active' : ''}`}
+              onClick={() => setCurrent(i)}
+              aria-label={`Photo ${i + 1}`}
+              aria-selected={i === current}
+            />
+          ))}
+        </div>
+      </div>
+      <div className="profile-caption">
+        <Code2 size={19} aria-hidden="true" />
+        <span>Backend engineer with a data science brain.</span>
+      </div>
+    </aside>
   );
 }
 
@@ -470,6 +519,81 @@ function ProfileFrame() {
         <span>Backend engineer with a data science brain.</span>
       </div>
     </aside>
+  );
+}
+
+function SkillCard({ group, index }) {
+  const icons = [Code2, Server, Database];
+  const Icon = icons[index % icons.length];
+  const [hoveredOrigin, setHoveredOrigin] = useState(null);
+
+  return (
+    <div className="skill-card">
+      <div className="skill-card-header">
+        <Icon size={20} aria-hidden="true" />
+        <h3>{group.title}</h3>
+      </div>
+      <div className="skill-card-pills">
+        {group.skills.map((skill) => (
+          <span
+            key={skill.name}
+            onMouseEnter={() => setHoveredOrigin(skill.origin)}
+            onMouseLeave={() => setHoveredOrigin(null)}
+          >
+            {skill.name}
+          </span>
+        ))}
+      </div>
+      <p className={`skill-origin${hoveredOrigin ? ' visible' : ''}`}>
+        {hoveredOrigin ?? ''}
+      </p>
+    </div>
+  );
+}
+
+const heroRoles = [
+  'a backend engineer.',
+  'a data science major.',
+  'a latte enthusiast.',
+];
+
+function HeroRole() {
+  const [index, setIndex] = useState(0);
+  const [displayed, setDisplayed] = useState('');
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const full = heroRoles[index];
+
+    if (!deleting && displayed.length < full.length) {
+      const t = setTimeout(() => setDisplayed(full.slice(0, displayed.length + 1)), 60);
+      return () => clearTimeout(t);
+    }
+
+    if (!deleting && displayed.length === full.length) {
+      const t = setTimeout(() => setDeleting(true), 1800);
+      return () => clearTimeout(t);
+    }
+
+    if (deleting && displayed.length > 0) {
+      const t = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 35);
+      return () => clearTimeout(t);
+    }
+
+    if (deleting && displayed.length === 0) {
+      setDeleting(false);
+      setIndex((i) => (i + 1) % heroRoles.length);
+    }
+  }, [displayed, deleting, index]);
+
+  return (
+    <p className="hero-role">
+      I&apos;m{' '}
+      <span className="hero-role-word">
+        {displayed}
+        <span className="hero-role-cursor" />
+      </span>
+    </p>
   );
 }
 
