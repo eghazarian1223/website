@@ -8,6 +8,7 @@ import {
   FileText,
   Github,
   GraduationCap,
+  Instagram,
   Linkedin,
   Mail,
   MapPin,
@@ -16,21 +17,19 @@ import {
   Sparkles,
   Trophy,
 } from 'lucide-react';
-import { interests, photos, portfolio, projects, skillGroups } from './data.js';
+import { experience, interests, photos, portfolio, projects, skillGroups } from './data.js';
 
 const navItems = [
   { id: 'home', label: 'Home' },
+  { id: 'experience', label: 'Experience' },
   { id: 'projects', label: 'Projects' },
-  { id: 'about', label: 'About' },
 ];
 
-const trackedSections = ['home', 'skills', 'projects', 'about'];
-
 const accentBySection = {
-  home: 'violet',
+  home: 'coral',
   skills: 'coral',
   projects: 'coral',
-  about: 'violet',
+  experience: 'coral',
 };
 
 function App() {
@@ -80,158 +79,97 @@ function App() {
     };
   }, []);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-        if (visible?.target.id) {
-          setActiveSection(visible.target.id);
-        }
-      },
-      { rootMargin: '-30% 0px -55% 0px', threshold: [0.15, 0.35, 0.6] },
-    );
-
-    trackedSections.forEach((id) => {
-      const section = document.getElementById(id);
-      if (section) observer.observe(section);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <div className={`site-shell accent-${accentBySection[activeSection]}`}>
       <Cloudscape />
-      <Header activeSection={activeSection} />
+      <Header activeSection={activeSection} setActiveSection={setActiveSection} />
 
       <main>
-        <section id="home" className="section home-section" aria-labelledby="home-title">
-          <div className="container hero-grid">
-            <div className="hero-copy">
-              <p className="eyebrow">{portfolio.handle}</p>
-              <h1 id="home-title">
-                Hi, I&apos;m <span>{portfolio.name}</span>.
-              </h1>
-              <HeroRole />
-              <p className="hero-intro">{portfolio.intro}</p>
-              <div className="hero-tags" aria-label="Focus areas">
-                {portfolio.roles.slice(0, 3).map((role) => (
-                  <span key={role}>{role}</span>
-                ))}
-              </div>
-
-              <div className="action-row" aria-label="Primary links">
-                <a className="button primary-button" href={portfolio.githubUrl} target="_blank" rel="noreferrer">
-                  <Github size={22} aria-hidden="true" />
-                  <span>GitHub</span>
-                </a>
-                <a className="button text-button" href={portfolio.resumeUrl} target="_blank" rel="noreferrer">
-                  <FileText size={21} aria-hidden="true" />
-                  <span>Resume</span>
-                </a>
-              </div>
-            </div>
-
-            <HeroVisual />
-          </div>
-        </section>
-
-        <section id="skills" className="section skills-section" aria-labelledby="skills-title">
-          <div className="container">
-            <div className="section-heading">
-              <p className="eyebrow">Technical toolkit</p>
-              <h2 id="skills-title">Skills</h2>
-              <p>
-                Languages, frameworks, and tools I reach for when building reliable backend systems
-                and data-driven applications.
-              </p>
-            </div>
-
-            <div className="skills-showcase">
-              {skillGroups.map((group, i) => (
-                <SkillCard key={group.title} group={group} index={i} />
-              ))}
-            </div>
-          </div>
-        </section>
-
-
-        <section id="projects" className="section projects-section" aria-labelledby="projects-title">
-          <div className="container">
-            <div className="section-heading">
-              <p className="eyebrow">Selected work</p>
-              <h2 id="projects-title">Projects</h2>
-            </div>
-
-            <div className="projects-layout">
-              <ProjectMap selectedProjectId={selectedProjectId} onSelectProject={setSelectedProjectId} />
-
-              <div className="project-panel">
-                <div className="project-tabs" aria-label="Project list">
-                  {projects.map((project) => (
-                    <button
-                      className={`project-tab accent-${project.accent}`}
-                      type="button"
-                      key={project.id}
-                      aria-pressed={selectedProjectId === project.id}
-                      onClick={() => setSelectedProjectId(project.id)}
-                    >
-                      <span aria-hidden="true" />
-                      {project.title}
-                    </button>
+        {activeSection === 'home' && (
+          <section id="home" className="section home-section" aria-labelledby="home-title">
+            <div className="container hero-grid">
+              <div className="hero-copy">
+                <h1 id="home-title">
+                  Hi, I&apos;m <span>{portfolio.name}</span>.
+                </h1>
+                <HeroRole />
+                <p className="hero-intro">{portfolio.intro}</p>
+                <div className="hero-tags" aria-label="Focus areas">
+                  {portfolio.roles.slice(0, 3).map((role) => (
+                    <span key={role}>{role}</span>
                   ))}
                 </div>
 
-                <ProjectCard project={selectedProject} />
+                <div className="action-row" aria-label="Primary links">
+                  <a className="button primary-button" href={portfolio.githubUrl} target="_blank" rel="noreferrer">
+                    <Github size={22} aria-hidden="true" />
+                    <span>GitHub</span>
+                  </a>
+                  <a className="button text-button" href={portfolio.resumeUrl} target="_blank" rel="noreferrer">
+                    <FileText size={21} aria-hidden="true" />
+                    <span>Resume</span>
+                  </a>
+                </div>
               </div>
+
+              <PhotoSlideshow />
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
-        <section id="about" className="section about-section" aria-labelledby="about-title">
-          <div className="container about-grid">
-            <div className="about-copy">
-              <p className="eyebrow">About</p>
-              <h2 id="about-title">About Me</h2>
-              <p>{portfolio.about}</p>
-              <p>{portfolio.aboutExtra}</p>
+        {activeSection === 'experience' && (
+          <ExperienceSection />
+        )}
 
-              <div className="contact-strip">
-                <a href={`mailto:${portfolio.email}`}>
-                  <Mail size={18} aria-hidden="true" />
-                  {portfolio.email}
-                </a>
-                <a href={portfolio.linkedinUrl} target="_blank" rel="noreferrer">
-                  <ArrowUpRight size={18} aria-hidden="true" />
-                  LinkedIn
-                </a>
-                <a href={portfolio.devpostUrl} target="_blank" rel="noreferrer">
-                  <Trophy size={18} aria-hidden="true" />
-                  Devpost
-                </a>
-                <span>
-                  <MapPin size={18} aria-hidden="true" />
-                  {portfolio.location}
-                </span>
+        {activeSection === 'projects' && (
+          <>
+            <section id="projects" className="section projects-section" aria-labelledby="projects-title">
+              <div className="container">
+                <div className="section-heading">
+                  <p className="eyebrow">Selected work</p>
+                  <h2 id="projects-title">Projects</h2>
+                </div>
+
+                <div className="projects-layout">
+                  <ProjectMap selectedProjectId={selectedProjectId} onSelectProject={setSelectedProjectId} />
+
+                  <div className="project-panel">
+                    <div className="project-tabs" aria-label="Project list">
+                      {projects.map((project) => (
+                        <button
+                          className={`project-tab accent-${project.accent}`}
+                          type="button"
+                          key={project.id}
+                          aria-pressed={selectedProjectId === project.id}
+                          onClick={() => setSelectedProjectId(project.id)}
+                        >
+                          <span aria-hidden="true" />
+                          {project.title}
+                        </button>
+                      ))}
+                    </div>
+
+                    <ProjectCard project={selectedProject} />
+                  </div>
+                </div>
               </div>
-            </div>
+            </section>
 
-            <PhotoSlideshow />
-          </div>
+            <section id="skills" className="section skills-section" aria-labelledby="skills-title">
+              <div className="container">
+                <div className="section-heading">
+                  <h2 id="skills-title">Skills</h2>
+                </div>
 
-          <div className="container interests-grid" aria-label="Interests">
-            {interests.map((interest) => (
-              <article className="interest-card" key={interest.title}>
-                <Sparkles size={20} aria-hidden="true" />
-                <h3>{interest.title}</h3>
-                <p>{interest.body}</p>
-              </article>
-            ))}
-          </div>
-        </section>
+                <div className="skills-showcase">
+                  {skillGroups.map((group, i) => (
+                    <SkillCard key={group.title} group={group} index={i} />
+                  ))}
+                </div>
+              </div>
+            </section>
+          </>
+        )}
       </main>
 
       <footer className="site-footer">
@@ -244,6 +182,9 @@ function App() {
             </a>
             <a href={portfolio.linkedinUrl} target="_blank" rel="noreferrer" aria-label="LinkedIn">
               <Linkedin size={18} />
+            </a>
+            <a href="https://www.instagram.com/ellaghazaryan_/" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <Instagram size={18} />
             </a>
             <a href={`mailto:${portfolio.email}`} aria-label="Email">
               <Mail size={18} />
@@ -288,70 +229,27 @@ function Cloudscape() {
   );
 }
 
-function Header({ activeSection }) {
+function Header({ activeSection, setActiveSection }) {
   return (
     <header className="site-header">
       <nav className="container nav-shell" aria-label="Main navigation">
-        <a className="logo" href="#home" aria-label={`${portfolio.name} home`}>
+        <button className="logo" onClick={() => setActiveSection('home')} aria-label={`${portfolio.name} home`}>
           {portfolio.initials}
-        </a>
+        </button>
 
         <div className="nav-links">
           {navItems.map((item) => (
-            <a
+            <button
               className={activeSection === item.id ? 'active' : ''}
-              href={`#${item.id}`}
               key={item.id}
+              onClick={() => setActiveSection(item.id)}
             >
               {item.label}
-            </a>
+            </button>
           ))}
         </div>
       </nav>
     </header>
-  );
-}
-
-function HeroVisual() {
-  return (
-    <div className="hero-visual" aria-hidden="true">
-      <div className="schema-grid">
-        <span className="trace trace-one" />
-        <span className="trace trace-two" />
-        <span className="trace trace-three" />
-        <span className="code-glyph glyph-one">{'{ }'}</span>
-        <span className="code-glyph glyph-two">&lt;/&gt;</span>
-        <span className="code-glyph glyph-three">$_</span>
-
-        <div className="terminal-card">
-          <div className="terminal-top">
-            <span className="window-dot red" />
-            <span className="window-dot yellow" />
-            <span className="window-dot green" />
-            <p>ella.cs</p>
-          </div>
-          <pre>
-            <code>
-              <span className="line-number">1</span>
-              <span className="keyword">const</span> <span className="cyan">ella</span> = {'{'}
-              {'\n'}
-              <span className="line-number">2</span>
-              {'  '}role: <span className="pink">&apos;backend&apos;</span>,
-              {'\n'}
-              <span className="line-number">3</span>
-              {'  '}stack: [<span className="pink">&apos;.NET&apos;</span>, <span className="pink">&apos;Python&apos;</span>, <span className="pink">&apos;Azure&apos;</span>],
-              {'\n'}
-              <span className="line-number">4</span>
-              {'  '}debug: <span className="pink">&apos;routes + data&apos;</span>,
-              {'\n'}
-              <span className="line-number">5</span>
-              {'  '}ship: () =&gt; <span className="cyan">reliableApis</span>
-              <span className="cursor" />
-            </code>
-          </pre>
-        </div>
-      </div>
-    </div>
   );
 }
 
@@ -389,10 +287,55 @@ function ProjectMap({ selectedProjectId, onSelectProject }) {
   );
 }
 
+function ProjectSlideshow({ images, title }) {
+  const [current, setCurrent] = useState(0);
+  const prev = () => setCurrent((c) => (c - 1 + images.length) % images.length);
+  const next = () => setCurrent((c) => (c + 1) % images.length);
+
+  return (
+    <div className="project-slideshow">
+      {images.map((src, i) => (
+        <img
+          key={src}
+          src={src}
+          alt={`${title} photo ${i + 1}`}
+          className={`slide-img${i === current ? ' active' : ''}`}
+          style={{ objectFit: 'cover', width: '100%', height: '100%', minHeight: '288px' }}
+        />
+      ))}
+      {images.length > 1 && (
+        <>
+          <button className="slide-btn slide-prev" type="button" onClick={prev} aria-label="Previous photo">
+            <ChevronLeft size={20} />
+          </button>
+          <button className="slide-btn slide-next" type="button" onClick={next} aria-label="Next photo">
+            <ChevronRight size={20} />
+          </button>
+          <div className="slide-dots" role="tablist" aria-label="Photo navigation">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                role="tab"
+                type="button"
+                className={`slide-dot${i === current ? ' active' : ''}`}
+                onClick={() => setCurrent(i)}
+                aria-label={`Photo ${i + 1}`}
+                aria-selected={i === current}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 function ProjectCard({ project }) {
   return (
     <article className={`project-card accent-${project.accent}`}>
-      {project.image ? (
+      {project.images ? (
+        <ProjectSlideshow images={project.images} title={project.title} />
+      ) : project.image ? (
         <div className="project-screenshot">
           <img src={project.image} alt={`${project.title} screenshot`} />
         </div>
@@ -410,7 +353,7 @@ function ProjectCard({ project }) {
       )}
 
       <div className="project-card-body">
-        <p className="project-tag">{project.tag}</p>
+        {project.tag && <p className="project-tag">{project.tag}</p>}
         <h3>{project.title}</h3>
         <p>{project.description}</p>
         <div className="tech-row">
@@ -418,7 +361,11 @@ function ProjectCard({ project }) {
             <span key={item}>{item}</span>
           ))}
         </div>
-        <a className="project-link" href={`#${project.id}`}>
+        <a
+          className="project-link"
+          href={project.githubUrl ?? `#${project.id}`}
+          {...(project.githubUrl ? { target: '_blank', rel: 'noreferrer' } : {})}
+        >
           <span>{project.metric}</span>
           <ArrowUpRight size={18} aria-hidden="true" />
         </a>
@@ -480,10 +427,6 @@ function PhotoSlideshow() {
           ))}
         </div>
       </div>
-      <div className="profile-caption">
-        <Code2 size={19} aria-hidden="true" />
-        <span>Backend engineer with a data science brain.</span>
-      </div>
     </aside>
   );
 }
@@ -513,10 +456,6 @@ function ProfileFrame() {
           <span />
           <span />
         </div>
-      </div>
-      <div className="profile-caption">
-        <Code2 size={19} aria-hidden="true" />
-        <span>Backend engineer with a data science brain.</span>
       </div>
     </aside>
   );
@@ -548,6 +487,49 @@ function SkillCard({ group, index }) {
         {hoveredOrigin ?? ''}
       </p>
     </div>
+  );
+}
+
+function ExperienceSection() {
+  const workItems = experience.filter((item) => item.org !== 'University of Michigan');
+
+  return (
+    <section id="experience" className="section experience-section" aria-labelledby="experience-title">
+      <div className="container">
+        <div className="section-heading">
+          <h2 id="experience-title">Experience</h2>
+        </div>
+        <div className="experience-list">
+          {workItems.map((item, i) => (
+            <article key={i} className={`experience-card accent-${item.accent}`}>
+              <div className="experience-card-header">
+                <div className="experience-card-title">
+                  <h3>{item.title}</h3>
+                  <p className="experience-org">{item.org}</p>
+                </div>
+                <div className="experience-meta">
+                  {item.incoming && <span className="experience-incoming-badge">Incoming</span>}
+                  <span className="experience-date">{item.incoming ? '' : item.date}</span>
+                  {item.place && (
+                    <span className="experience-place">
+                      <MapPin size={13} aria-hidden="true" />
+                      {item.place}
+                    </span>
+                  )}
+                </div>
+              </div>
+              {item.points && item.points.length > 0 && (
+                <ul className="experience-points">
+                  {item.points.map((point, j) => (
+                    <li key={j}>{point}</li>
+                  ))}
+                </ul>
+              )}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -594,6 +576,14 @@ function HeroRole() {
         <span className="hero-role-cursor" />
       </span>
     </p>
+  );
+}
+
+function MiffyDeco() {
+  return (
+    <div className="miffy-deco" aria-hidden="true">
+      <img src="/miffy.png" alt="Miffy with a latte" className="miffy-img" />
+    </div>
   );
 }
 

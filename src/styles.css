@@ -20,7 +20,7 @@
   --green: #aeeccf;
   --blue: #b9d9ff;
   --gold: #f2d18b;
-  --accent: var(--violet);
+  --accent: var(--coral);
 }
 
 * {
@@ -30,6 +30,7 @@
 
 html {
   scroll-behavior: smooth;
+  zoom: 0.9;
 }
 
 body {
@@ -130,6 +131,9 @@ a {
   color: var(--accent);
   font-family: "Snell Roundhand", "Brush Script MT", cursive;
   font-size: 3rem;
+  background: none;
+  padding: 0;
+  cursor: pointer;
   line-height: 1;
   transform: translateY(2px);
   text-shadow: 0 0 18px color-mix(in srgb, var(--accent) 38%, transparent);
@@ -144,19 +148,26 @@ a {
   font-weight: 700;
 }
 
-.nav-links a {
+.nav-links a,
+.nav-links button {
   position: relative;
+  background: none;
+  padding: 0;
+  cursor: pointer;
   transition:
     color 180ms ease,
     transform 180ms ease;
 }
 
 .nav-links a:hover,
-.nav-links a.active {
+.nav-links a.active,
+.nav-links button:hover,
+.nav-links button.active {
   color: var(--accent);
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links button:hover {
   transform: translateY(-1px);
 }
 
@@ -1834,7 +1845,9 @@ h1 span,
 h1 strong,
 .eyebrow,
 .nav-links a:hover,
-.nav-links a.active {
+.nav-links a.active,
+.nav-links button:hover,
+.nav-links button.active {
   color: var(--coral);
 }
 
@@ -1874,11 +1887,30 @@ h1 strong,
 
 .terminal-card {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.32), transparent 32%),
-    rgba(61, 37, 66, 0.84);
+    linear-gradient(160deg, rgba(255, 255, 255, 0.14) 0%, transparent 40%),
+    rgba(56, 30, 62, 0.72);
+  backdrop-filter: blur(28px) saturate(1.3);
+  border: 1px solid rgba(255, 200, 228, 0.28);
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.24),
-    0 24px 90px rgba(210, 111, 158, 0.24);
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 28px 80px rgba(210, 111, 158, 0.32),
+    0 8px 32px rgba(180, 100, 200, 0.18);
+}
+
+.terminal-top {
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom-color: rgba(255, 200, 228, 0.2);
+}
+
+.schema-grid {
+  background-image:
+    linear-gradient(rgba(255, 159, 189, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 160, 255, 0.11) 1px, transparent 1px);
+}
+
+.schema-grid::before,
+.schema-grid::after {
+  border-color: rgba(255, 159, 189, 0.28);
 }
 
 .schema-grid {
@@ -2005,7 +2037,9 @@ h1 strong,
 }
 
 .nav-links a.active,
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links button.active,
+.nav-links button:hover {
   color: #cf5f95;
 }
 
@@ -2020,12 +2054,40 @@ h1 strong,
 }
 
 .hero-grid {
-  grid-template-columns: minmax(0, 960px);
-  gap: 0;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
 }
 
 .hero-copy {
   max-width: 980px;
+}
+
+.hero-grid .profile-frame {
+  background: transparent;
+  border: 2px solid rgba(220, 140, 180, 0.5);
+  box-shadow:
+    0 0 0 8px rgba(255, 190, 220, 0.15),
+    0 28px 64px rgba(200, 90, 145, 0.28),
+    0 4px 16px rgba(200, 90, 145, 0.14);
+  border-radius: 28px;
+  justify-self: end;
+  width: min(360px, 100%);
+  overflow: hidden;
+}
+
+.hero-grid .slideshow-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 160, 200, 0.32) 0%,
+    rgba(255, 180, 220, 0.18) 35%,
+    transparent 65%
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
 .eyebrow {
@@ -2098,14 +2160,6 @@ h3 {
   background: rgba(255, 255, 255, 0.18);
 }
 
-.hero-visual {
-  min-height: 0;
-  height: 0;
-  opacity: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
 .section-heading p,
 .about-copy p,
 .interest-card p,
@@ -2171,6 +2225,10 @@ h3 {
 .experience-meta span,
 .experience-role {
   color: #876987;
+}
+
+.experience-meta .experience-incoming-badge {
+  color: var(--accent);
 }
 
 .project-tabs {
@@ -2309,7 +2367,9 @@ h3 {
 }
 
 .home-section {
+  min-height: 100vh;
   padding-top: 168px;
+  padding-bottom: 80px;
 }
 
 .hero-copy {
@@ -2529,11 +2589,10 @@ h1 span {
 
 .slideshow-stage {
   position: relative;
-  min-height: 520px;
+  aspect-ratio: 3 / 4;
+  max-height: 480px;
   overflow: hidden;
-  background:
-    linear-gradient(135deg, rgba(255, 159, 189, 0.18), transparent 42%),
-    rgba(255, 246, 252, 0.5);
+  background: transparent;
 }
 
 .slide-img {
@@ -2545,6 +2604,10 @@ h1 span {
   opacity: 0;
   transition: opacity 600ms ease;
   pointer-events: none;
+}
+
+.slideshow-stage .slide-img {
+  object-position: 30% center;
 }
 
 .slide-img.active {
@@ -2618,15 +2681,18 @@ h1 span {
    ===================================================== */
 
 .project-screenshot {
-  min-height: 288px;
+  overflow: hidden;
+}
+
+.project-slideshow {
+  position: relative;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
 }
 
 .project-screenshot img {
   width: 100%;
-  height: 100%;
-  min-height: 288px;
-  object-fit: cover;
+  height: auto;
   display: block;
   transition: transform 280ms ease;
 }
@@ -2713,12 +2779,8 @@ h1 span {
     min-height: 400px;
   }
 
-  .project-screenshot {
-    min-height: 220px;
-  }
-
-  .project-screenshot img {
-    min-height: 220px;
+  .project-slideshow {
+    aspect-ratio: 4 / 3;
   }
 
   .footer-inner {
@@ -2749,3 +2811,159 @@ h1 span {
     min-height: 320px;
   }
 }
+
+/* =====================================================
+   ABOUT SECTION
+   ===================================================== */
+
+.about-body {
+  max-width: 720px;
+  color: #654d68;
+  font-size: 1.08rem;
+  line-height: 1.78;
+  margin-bottom: 18px;
+}
+
+/* =====================================================
+   ABOUT HEADING
+   ===================================================== */
+
+#about-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  white-space: nowrap;
+}
+
+/* =====================================================
+   EXPERIENCE SECTION
+   ===================================================== */
+
+.experience-section {
+  padding-bottom: 100px;
+}
+
+.experience-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 860px;
+}
+
+.experience-card {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 28px 32px;
+  transition: border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.experience-card:hover {
+  border-color: var(--line-strong);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.experience-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.experience-card-title h3 {
+  margin: 0 0 4px;
+  font-size: 1.12rem;
+  font-weight: 700;
+}
+
+.experience-org {
+  margin: 0;
+  color: var(--accent);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.experience-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.experience-date {
+  color: var(--muted);
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+.experience-place {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted-2);
+  font-size: 0.84rem;
+}
+
+.experience-incoming-badge {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.experience-points {
+  margin: 18px 0 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.experience-points li {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 600px) {
+  .experience-card {
+    padding: 20px 18px;
+  }
+
+  .experience-card-header {
+    flex-direction: column;
+  }
+
+  .experience-meta {
+    align-items: flex-start;
+  }
+}
+
+/* =====================================================
+   MIFFY DECORATION
+   ===================================================== */
+
+.miffy-deco {
+  display: inline-block;
+  margin-top: 32px;
+  animation: miffyDrink 2.8s ease-in-out infinite;
+}
+
+.miffy-img {
+  width: 180px;
+  height: auto;
+  display: block;
+}
+
+@keyframes miffyDrink {
+  0%, 100% { transform: translateY(0px); }
+  25%      { transform: translateY(-6px); }
+  45%, 58% { transform: translateY(-9px); }
+  78%      { transform: translateY(-2px); }
+}
+

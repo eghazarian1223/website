@@ -6,12 +6,12 @@ export const portfolio = {
   location: 'Ann Arbor, MI',
   email: 'ellaghaz@umich.edu',
   githubUrl: 'https://github.com/eghazarian1223',
-  linkedinUrl: 'https://linkedin.com/in/ella',
-  devpostUrl: 'https://devpost.com/ella',
+  linkedinUrl: 'https://www.linkedin.com/in/ella-ghazarian/',
+  devpostUrl: 'https://devpost.com/eghazarian1223',
   resumeUrl: '/Ella_Ghazarian_Resume.pdf',
   roles: ['backend engineer', 'data science student', 'systems debugger', 'hackathon builder'],
   intro:
-    "University of Michigan data science student (go blue! 〽️) interested in backend and product engineering 🌸 Usually feeding into my café addiction ☕, rewatching early 2000s TV shows 📺, being chronically online, or building something for a hackathon every once in a while.",
+    "University of Michigan data science student (go blue! 〽️) interested in backend and product engineering. Usually feeding into my café addiction ☕, rewatching early 2000s TV shows, being chronically online, or building something for a hackathon every once in a while.",
   projectsIntro: '',
   about:
     "I'm studying Data Science at the University of Michigan, where my favorite problems sit between backend engineering and applied data work. I like taking unclear systems, finding the failure modes, and turning them into something a user can trust.",
@@ -23,55 +23,61 @@ export const projects = [
   {
     id: 'safetyfirst',
     title: 'SafetyFirst',
-    tag: 'JacHacks',
+    tag: 'JacHacks (UMich)',
     accent: 'coral',
     description:
       'A route safety analysis system that detects risky pedestrian transitions, models route segments as ordered graph pieces, and exposes API endpoints for rerouting recommendations.',
     tech: ['Python', 'FastAPI', 'Google Routes API'],
-    metric: 'unsafe segment detection',
+    metric: 'source code',
+    githubUrl: 'https://github.com/eghazarian1223/safety-first-jac',
     image: '/screenshots/safetyfirst.png',
   },
   {
     id: 'productivepanda',
     title: 'ProductivePanda',
-    tag: 'Mood-Aware Tasks',
+    tag: '',
     accent: 'green',
     description:
       'A mood-based task manager that uses NLP to analyze input, reorganize to-do lists, and suggest uplifting tasks while keeping mood and task data modular.',
     tech: ['Python', 'Flask', 'Firestore'],
-    metric: 'sentiment-aware planning',
+    metric: 'source code',
+    githubUrl: 'https://github.com/eghazarian1223/ProductivePanda',
     image: '', // e.g. '/screenshots/productivepanda.png'
   },
   {
     id: 'dilemmai',
     title: 'DilemmAI',
-    tag: '1st @ UncommonHacks',
+    tag: '1st @ UncommonHacks (UChicago)',
     accent: 'violet',
     description:
       'A game theory application where users design strategies for an AI agent, run simulations, and evaluate outcomes through a dynamic Tailwind interface.',
     tech: ['JavaScript', 'TailwindCSS', 'Figma'],
-    metric: 'award-winning strategy sim',
-    image: '/screenshots/dilemmai.png',
+    metric: 'source code',
+    githubUrl: 'https://github.com/theswerd/dilemmAI',
+    images: ['/screenshots/dilemmai.png', '/screenshots/dilemmai-1.jpg', '/screenshots/dilemmai-3.jpg'],
   },
   {
     id: 'sentiment-lab',
     title: 'AI/ML Research',
-    tag: 'AI/ML Research',
+    tag: 'NSF REU @ UNT',
     accent: 'blue',
     description:
-      'A research project applying machine learning techniques to aspect-based sentiment analysis, improving topic-specific sentiment accuracy by 20%.',
-    tech: ['Python', 'ML', 'NLP'],
-    metric: '20% accuracy lift',
+      'An NSF-sponsored REU at the University of North Texas investigating how COVID-19 shaped China\'s country reputation, using fine-tuned LLMs and BERTopic for topic modeling across a 30-million-record dataset.',
+    tech: ['Python', 'BERT', 'GPT-3.5', 'BERTopic', 'NLP'],
+    metric: 'research paper',
+    githubUrl: 'https://drive.google.com/file/d/1sSnNNwZmpFH9xkVImtKbC0_y3zjwaxuy/view',
     image: '/screenshots/aiml-research.png',
   },
   {
     id: 'retrotune',
     title: 'RetroTune',
-    tag: 'Hackathon',
+    tag: 'LaHacks (UCLA)',
     accent: 'coral',
-    description: 'Description coming soon.',
-    tech: ['Python', 'Reflex'],
-    metric: '',
+    description:
+      'A web app that groups your Instagram posts into distinct life eras using Google Gemini vision analysis, then builds Spotify playlists tuned to the vibe of each period.',
+    tech: ['Python', 'Reflex', 'Google Gemini', 'Spotify API', 'Instagram API'],
+    metric: 'source code',
+    githubUrl: 'https://github.com/mayhong1/lahacks24',
     image: '/screenshots/retrotune.png',
   },
 ];
@@ -90,7 +96,16 @@ export const experience = [
   {
     title: 'Software Engineering Intern',
     org: 'Microsoft',
-    date: 'May 2025 - Aug. 2025',
+    date: 'Incoming',
+    place: 'Redmond, WA',
+    accent: 'blue',
+    incoming: true,
+    points: [],
+  },
+  {
+    title: 'Software Engineering & PM Intern',
+    org: 'Microsoft',
+    date: 'May 2025 – Aug. 2025',
     place: 'Redmond, WA',
     accent: 'blue',
     points: [
@@ -102,7 +117,7 @@ export const experience = [
   {
     title: 'AI & Machine Learning Intern',
     org: 'University of North Texas',
-    date: 'May 2023 - July 2023',
+    date: 'May 2023 – Aug. 2023',
     place: 'Denton, TX',
     accent: 'violet',
     points: [
@@ -159,9 +174,10 @@ export const skillGroups = [
 
 // Add photo filenames to /public/photos/ and list their paths here
 export const photos = [
-  // '/photos/photo1.jpg',
-  // '/photos/photo2.jpg',
-  // '/photos/photo3.jpg',
+  '/photos/IMG_0619.jpeg',
+  '/photos/IMG_1740.jpeg',
+  '/photos/IMG_6449.jpeg',
+  '/photos/IMG_7004.JPG',
 ];
 
 export const interests = [
