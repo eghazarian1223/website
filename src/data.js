@@ -34,15 +34,15 @@ export const projects = [
   },
   {
     id: 'productivepanda',
-    title: 'ProductivePanda',
+    title: 'Attune',
     tag: '',
     accent: 'green',
     description:
-      'A mood-based task manager that uses NLP to analyze input, reorganize to-do lists, and suggest uplifting tasks while keeping mood and task data modular.',
+      'A full-stack Flask app with user auth, bcrypt hashing, and sentiment analysis that reshapes your task list based on how you\'re feeling. Built with blueprints, relational models, and per-user data storage.',
     tech: ['Python', 'Flask', 'Firestore'],
     metric: 'source code',
     githubUrl: 'https://github.com/eghazarian1223/ProductivePanda',
-    image: '', // e.g. '/screenshots/productivepanda.png'
+    image: '/screenshots/productivepanda.png'
   },
   {
     id: 'dilemmai',

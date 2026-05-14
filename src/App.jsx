@@ -126,7 +126,6 @@ function App() {
             <section id="projects" className="section projects-section" aria-labelledby="projects-title">
               <div className="container">
                 <div className="section-heading">
-                  <p className="eyebrow">Selected work</p>
                   <h2 id="projects-title">Projects</h2>
                 </div>
 
